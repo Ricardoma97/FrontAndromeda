@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navi from './navi.js';
 	
-class Pilotos extends React.Component{
-constructor(props) {
-    super(props);
-  }
-  render(){
+function Pilotos (){
   return (
     <div>
     <Navi/>
@@ -13,5 +9,5 @@ constructor(props) {
     </div>
     );
 }	
-}
+
 export default Pilotos;
