@@ -3,26 +3,21 @@ import Navi from './navi.js';
 import axios from 'axios';
 import { BrowserRouter as Router,Switch,Route,Link,Redirect} from "react-router-dom";
 
-function NewUser (){
+function NewPiloto (){
   const[token,setToken]=useState([window.localStorage.getItem('token')]);
   const[gotData,setGotData]=useState(false);
   const[id,setId]=useState(1);
-  const[idToDelete,setidToDelete]=useState(null);
-  const[idToUpdate,setidToUpdate]=useState(null);
   const[name,setname]=useState('');
-  const[password,setpassword]=useState('');
-  const[type,settype]=useState('');
+  const[birthday,setbirthday]=useState('');
   const[mail,setmail]=useState('');
   const[direccion,setdireccion]=useState('');
+  const[numberOfFlights,setnumberOfFlights]=useState(1);
 
    function handlenameChange(e){
     setname(e.target.value.toString());
   }
-   function handlepasswordChange(e){
-    setpassword(e.target.value.toString());
-  }
-   function handletypeChange(e){
-    settype(e.target.value.toString());
+   function handlebirthdayChange(e){
+    setbirthday(e.target.value.toString());
   }
    function handlemailChange(e){
     setmail(e.target.value.toString());
@@ -30,6 +25,9 @@ function NewUser (){
    function handledireccionChange(e){
     setdireccion(e.target.value.toString());
   }
+  function handlenumberOfFlightsChange(e){
+      setnumberOfFlights(e.target.value.toString());
+    }
 
   /*function getDataFromDb(){
     axios(options)
@@ -37,15 +35,15 @@ function NewUser (){
   };*/
 
   function signUp(){
-    axios.post('http://localhost:3001/users/',{
-    "type":`${type}`,
+    axios.post('http://localhost:3001/pilotos/',{
     "name":`${name}`,
-    "password":`${password}`,
+    "birthday":`${birthday}`,
+    "direccion":`${direccion}`,
     "mail":`${mail}`,
-    "direccion":`${direccion}` 
+    "numberOfFlights":`${numberOfFlights}`
   },{headers: {Authorization: `Bearer ${token}`}})
       .then((response) => {
-        alert(response);
+        alert('Se creo con exito el nuevo Piloto');
       })
   };
 
@@ -60,14 +58,14 @@ function NewUser (){
      window.localStorage.getItem('logedIn') ? (
     <div>
     <Navi/>
-    <div className="container">
-    <h2>Nuevo Usuario</h2>
+    <div class="container">
+    <h2>Nuevo Piloto</h2>
     {/*<p>{token}</p>*/}
     <input type="text" placeholder="Name" value={name} onChange={handlenameChange}/>
-    <input type="text" placeholder="Password" value={password} onChange={handlepasswordChange}/>
-    <input type="text" placeholder="Type" value={type} onChange={handletypeChange}/>
-    <input type="text" placeholder="Mail" value={mail} onChange={handlemailChange}/>
+    <input type="date" placeholder="Birthday" value={birthday} onChange={handlebirthdayChange}/>
     <input type="text" placeholder="Direccion" value={direccion} onChange={handledireccionChange}/>
+    <input type="text" placeholder="Mail" value={mail} onChange={handlemailChange}/>
+    <input type="number" placeholder="NumberOfFlights" value={numberOfFlights} onChange={handlenumberOfFlightsChange}/>
     <button onClick={signUp}>signUp</button>
     
     </div>
@@ -77,4 +75,14 @@ function NewUser (){
    
   }
 
-export default NewUser;
+export default NewPiloto;
+
+/*
+{"_id":{"$oid":"5dd89208b6f846567448b324"}
+,"photo":"prueba.url",
+"name":"Ricardo Prueba",
+"birthday":{"$date":{"$numberLong":"867801600000"}},
+"direccion":"La calle",
+"mail":"prueba@gmail.com",
+"numeberOfFlights":{"$numberInt":"1"},
+"__v":{"$numberInt":"0"}}*/

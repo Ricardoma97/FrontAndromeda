@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navi from './navi.js';
 import axios from 'axios';
 import { BrowserRouter as Router,Switch,Route,Link,Redirect} from "react-router-dom";
+import pfp from '../Userpfp.jpg';
 
 function Users (){
   const[data,setData]=useState([]);
@@ -13,13 +14,13 @@ function Users (){
   const[objectToUpdate,setobjectToUpdate]=useState(null);
   const[token,setToken]=useState([window.localStorage.getItem('token')]);
   const[tabla,setTabla]=useState();
-  
+
   useEffect(()=>{
     console.log('se cargo el comp user');
     console.log({data})
     //getUsers();
     //console.log({id});
-    if(!`${gotData}`){
+    if(!`${data}`){
       getUsers();
       console.log('no habia data');
     }
@@ -76,8 +77,7 @@ function Users (){
      window.localStorage.getItem('logedIn') ? (
     <div>
     <Navi/>
-    <div class="container">
-    <h2>Usuarios</h2>
+    <div className="container">
     {/*<p>{token}</p>*/}
    {/* <ul>
           {data.length <= 0
@@ -94,8 +94,9 @@ function Users (){
     <div id="tabla">
             <table>
                 <thead>
-                    <h5>Todos los vuelos</h5>
+                    <h5>Todos los usuarios</h5>
                     <tr>
+                        <th>Photo</th>
                         <th>Id</th>
                         <th>Nombre</th>
                         <th>Mail</th>
@@ -106,6 +107,7 @@ function Users (){
             ? 'NO DB ENTRIES YET'
             : data.map((dat) => (
                 <tr style={{ padding: '10px' }} key={data._id}>
+                  <td><img src={pfp} className="pfp"/></td>
                   <td style={{ color: 'gray' }}> {dat._id}</td>
                   <td>{dat.name} </td>
                   <td style={{ color: 'gray' }}>{dat.mail}</td>
@@ -114,9 +116,6 @@ function Users (){
                  </tbody>
             </table>
         </div>
-    <button onClick={checkToken}>checkToken</button>
-    <button onClick={getUsers}>getUsers</button>
-    <button onClick={consolelogusers}>consolelogusers</button>
     <Link to="/newUser">
       <button >Nuevo usuario</button>
     </Link>
