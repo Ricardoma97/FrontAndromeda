@@ -8,19 +8,21 @@ function NewVuelo (){
   const[token,setToken]=useState([window.localStorage.getItem('token')]);
   const[gotData,setGotData]=useState(false);
   const[data,setdata]=useState([]);
-  const[id,setId]=useState(1);
+  const[id,setId]=useState();
   const[idToDelete,setidToDelete]=useState(null);
   const[idToUpdate,setidToUpdate]=useState(null);
   const[destino,setdestino]=useState('');
   const[tipoDeVuelo,settipoDeVuelo]=useState('');
   const[arrivalDate,setarrivalDate]=useState('');
   const[launchDate,setlaunchDate]=useState('');
-  const[capacidad,setcapacidad]=useState(1);
+  const[capacidad,setcapacidad]=useState();
   const[name,setname]=useState('');
   const[birthday,setbirthday]=useState('');
   const[direccion,setdireccion]=useState('');
   const[mail,setmail]=useState('');
-  const[numeberOfFlights,setnumeberOfFlights]=useState(1);
+  const[numeberOfFlights,setnumeberOfFlights]=useState();
+  const[idReferencia,setidReferencia]=useState('');
+  const[dataDestinos,setdataDestinos]=useState([]);
 
    function handledestinoChange(e){
     setdestino(e.target.value.toString());
@@ -52,12 +54,23 @@ function NewVuelo (){
   function handlenumeberOfFlightsChange(e){
     setnumeberOfFlights(e.target.value.toString());
   }
+  function handleidReferenciaChange(e){
+    setidReferencia(e.target.value.toString());
+  }
 
 
   function getPilotos(){
     var AuthStr = 'Bearer '.concat({token});
     axios.get('https://andromedaapi.herokuapp.com/pilotos/',{headers: {Authorization: `Bearer ${token}`}})
     .then((response) => setdata(response.data.result))
+    .catch((error) => {
+     console.log('error ' + error);
+    });
+  }
+  function getDestinos(){
+    var AuthStr = 'Bearer '.concat({token});
+    axios.get('https://andromedaapi.herokuapp.com/destinos/',{headers: {Authorization: `Bearer ${token}`}})
+    .then((response) => setdataDestinos(response.data.result))
     .catch((error) => {
      console.log('error ' + error);
     });
@@ -69,6 +82,7 @@ function NewVuelo (){
     //console.log({id});
     if(!`${data}`){
       getPilotos();
+      getDestinos();
       console.log('no habia data');
     }
     //getDataFromDb();
@@ -105,16 +119,16 @@ function NewVuelo (){
     "launchDate":`${launchDate}`,
     "capacidad":`${capacidad}`,
     "piloto":{
+      "id_referencia":`${idReferencia}`,
       "name":`${name}`,
       "birthday":`${birthday}`,
-      "direccion":`${direccion}`,
       "direccion":`${direccion}`,
       "mail":`${mail}`,
       "numeberOfFlights":`${numeberOfFlights}` 
     }
   },{headers: {Authorization: `Bearer ${token}`}})
       .then((response) => {
-        alert(response);
+        alert('Creado con exito');
       })
   };
 
@@ -130,19 +144,21 @@ function NewVuelo (){
     <div>
     <Navi/>
     <div className="container">
-    <h2>Nuevo Usuario</h2>
+    <h2>Nuevo Vuelo</h2>
+    <p>Es posible Seleccionar pilotos y destinos disponibles</p>
     {/*<p>{token}</p>*/}
-    <input type="text" placeholder="Destino" value={destino} onChange={handledestinoChange}/>
-    <input type="text" placeholder="Tipo de Vuelo" value={name} onChange={handlenameChange}/>
-    <input type="date" placeholder="Arrival Date" value={name} onChange={handlenameChange}/>
-    <input type="date" placeholder="Launch Date" value={name} onChange={handlenameChange}/>
-    <input type="number" placeholder="capacidad" value={mail} onChange={handlemailChange}/>
-    <input type="text" placeholder="Nombre del Piloto" value={direccion} onChange={handledireccionChange}/>
-    <input type="text" placeholder="Direccion" value={direccion} onChange={handledireccionChange}/>
-    <input type="text" placeholder="Direccion" value={direccion} onChange={handledireccionChange}/>
-    <input type="text" placeholder="Direccion" value={direccion} onChange={handledireccionChange}/>
+    <input id="Destino"type="text" placeholder="Destino" value={destino} onChange={handledestinoChange}/>
+    <input id="Tipo_de_vuelo" type="text" placeholder="Tipo de Vuelo" value={tipoDeVuelo} onChange={handletipoDeVueloChange}/>
+    <input id="Arrival Date" type="date" placeholder="Arrival Date" value={arrivalDate} onChange={handlearrivalDateChange}/>
+    <input id=""type="date" placeholder="Launch Date" value={launchDate} onChange={handlelaunchDateChange}/>
+    <input id=""type="number" placeholder="Capacidad" value={capacidad} onChange={handlecapacidadChange}/>
+    <input id=""type="text" placeholder="Nombre del Piloto" value={name} onChange={handlenameChange}/>
+    <input id=""type="text" placeholder="Birthday" value={birthday} onChange={handlebirthdayChange}/>
+    <input id=""type="text" placeholder="Direccion" value={direccion} onChange={handledireccionChange}/>
+    <input id=""type="text" placeholder="Mail" value={mail} onChange={handlemailChange}/>
+    <input id=""type="number" placeholder="Numero de vuelos" value={numeberOfFlights} onChange={handlenumeberOfFlightsChange}/>
+    <input id=""type="text" placeholder="id de Referencia" value={idReferencia} onChange={handleidReferenciaChange}/>
     <button onClick={signUp}>signUp</button>
-    <p>Pilotos disponibles</p>
     <div id="tabla">
             <table>
                 <thead>
@@ -163,12 +179,48 @@ function NewVuelo (){
             : data.map((dat) => (
                 <tr style={{ padding: '10px' }} key={data._id}>
                   <td><img src={pfp} className="pfp"/></td>
-                  <td style={{ color: 'gray' }}> {dat._id}</td>
+                  <td> {dat._id}</td>
                   <td>{dat.name} </td>
-                  <td style={{ color: 'gray' }}>{dat.mail}</td>
-                  <td style={{ color: 'gray' }}>{dat.birthday}</td>
-                  <td style={{ color: 'gray' }}>{dat.direccion}</td>
-                  <td style={{ color: 'gray' }}>{dat.numeberOfFlights}</td>
+                  <td>{dat.mail}</td>
+                  <td>{dat.birthday}</td>
+                  <td>{dat.direccion}</td>
+                  <td>{dat.numeberOfFlights}</td>
+                  <button onClick={()=>{
+                    setname(`${dat.name}`);
+                    setmail(`${dat.mail}`);
+                    setbirthday(`${dat.birthday}`);
+                    setdireccion(`${dat.direccion}`);
+                    setnumeberOfFlights(`${dat.numeberOfFlights}`);
+                    setidReferencia(`${dat._id}`)
+                  }}>Seleccionar</button>
+                </tr>
+              ))}
+                 </tbody>
+            </table>
+    </div>
+    </div>
+    <div className="container">
+    <div id="tabla">
+            <table>
+                <thead>
+                    <h5>Todos los destinos</h5>
+                    <tr>
+                        <th>Photo</th>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {dataDestinos.length <= 0
+            ? 'NO DB ENTRIES YET'
+            : dataDestinos.map((dat) => (
+                <tr style={{ padding: '10px' }} key={data._id}>
+                  <td><img src={pfp} className="pfp"/></td>
+                  <td> {dat._id}</td>
+                  <td>{dat.name} </td>
+                  <button onClick={()=>{
+                    setdestino(`${dat.name}`);
+                  }}>Seleccionar</button>
                 </tr>
               ))}
                  </tbody>

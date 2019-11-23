@@ -1,14 +1,204 @@
 import React, { useState, useEffect } from "react";
 import Navi from './navi.js';
+import axios from 'axios';
 import { BrowserRouter as Router,Switch,Route,Link,Redirect} from "react-router-dom";
-function Tickets(){
+import pfp from '../Userpfp.jpg';
+
+function Ticket (){
+  const[data,setData]=useState([]);
+  const[dataVuelo,setdataVuelo]=useState([]);
+  const[dataPilotos,setdataPilotos]=useState([]);
+  const[gotData,setGotData]=useState(false);
+  const[id,setId]=useState(1);
+  const[intervalIsSet,setintervalIsSet]=useState(false);
+  const[idToDelete,setidToDelete]=useState(null);
+  const[idToUpdate,setidToUpdate]=useState(null);
+  const[objectToUpdate,setobjectToUpdate]=useState(null);
+  const[token,setToken]=useState([window.localStorage.getItem('token')]);
+  const[tabla,setTabla]=useState();
+
+  useEffect(()=>{
+    console.log('se cargo el comp user');
+    console.log({data})
+    //getTicket();
+    //console.log({id});
+    if(!`${data}`){
+      getTicket();
+      console.log('no habia data');
+    }if(!`${dataVuelo}`){
+      //getVuelos();
+      console.log('no habia data');
+    }
+    //getDataFromDb();
+    if (!intervalIsSet) {
+      /*let interval = setInterval(getDataFromDb, 10000);*/
+      //console.log('wut?');
+      //setintervalIsSet(interval);
+    }
+  });
+
+  function lol(argument){
+    setId(id+1);
+  };
+  /*function getDataFromDb(){
+    axios(options)
+      .then((response) => console.log(response));
+  };*/
+  function checkToken(){
+    console.log({token});
+    window.localStorage.setItem('token',JSON.stringify({token}));
+  };
+  function getTicket(){
+    var AuthStr = 'Bearer '.concat({token});
+    axios.get('https://andromedaapi.herokuapp.com/tickets/',{headers: {Authorization: `Bearer ${token}`}})
+    .then((response) => setData(response.data.result))
+    .catch((error) => {
+     console.log('error ' + error);
+    });
+  }
+  function consolelogTicket(){
+    console.log({data});
+    setTabla({data})
+  }
+
+
+  function logout(){
+    setToken('');
+    window.localStorage.removeItem('token');
+    window.localStorage.setItem('logedIn',false);
+    this.forceUpdate();
+  }
+
   return (
-    window.localStorage.getItem('logedIn') ? (
+     window.localStorage.getItem('logedIn') ? (
     <div>
     <Navi/>
-    <h1>Tickets</h1>
-    </div>) : (<Redirect to="/"/>)
+    <div className="container">
+    {/*<p>{token}</p>*/}
+   {/* <ul>
+          {data.length <= 0
+            ? 'NO DB ENTRIES YET'
+            : data.map((dat) => (
+                <li style={{ padding: '10px' }} key={data._id}>
+                  <span style={{ color: 'gray' }}> id: </span> {dat._id} <br />
+                  <span style={{ color: 'gray' }}> name: </span>
+                  {dat.name}
+                  <span style={{ color: 'gray' }}> mail: </span> {dat.mail} <br />
+                </li>
+              ))}
+    </ul>*/}
+    {/*{
+  "_id": "5dd89249b6f846567448b328",
+  "name": "Ticket1",
+  "vuelo": {
+    "_id": "5dd89249b6f846567448b329",
+    "id": "5dad1e442c224f4d6cc0ced0",
+    "arrivalDate": "1997-07-02T00:00:00.000Z",
+    "launchDate": "1997-07-02T00:00:00.000Z",
+    "capacidad": 1000,
+    "piloto": {
+      "_id": "5dd89249b6f846567448b32a",
+      "id_referencia": "5dad12241737723f9009a3dc",
+      "photo": "prueba.url",
+      "name": "James Gun",
+      "birthday": "1997-07-02T00:00:00.000Z",
+      "direccion": "La calle",
+      "mail": "prueba@gmail.com",
+      "numeberOfFlights": 1
+    }
+  },
+  "cliente": {
+    "_id": "5dd89249b6f846567448b32b",
+    "id": "5dacd12ce975651ecc6322b9",
+    "type": "Admin",
+    "name": "Ricardo4",
+    "mail": "ricardoma974@gmail.com",
+    "direccion": "Del sol 100"
+  },
+  "cost": 1000,
+  "equipaje": "dos maletas",
+  "__v": 0
+}*/}
+    <div id="tabla">
+            <table>
+                <thead>
+                    <h5>Todos los Ticket</h5>
+                    <tr>
+                        <th>Id</th>
+                        <th>Foto del cLiente</th>
+                        <th>Name</th>
+                        <th>Nombre del cLiente</th>
+                        <th>Id vuelo</th>
+                        <th>Dia de Arrivo</th>
+                        <th>Dia de Lanzamiento</th>
+                        <th>Nombre del piloto</th>
+                        <th>Costo</th>
+                        <th>Equipaje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {data.length <= 0
+            ? 'NO DB ENTRIES YET'
+            : data.map((dat) => (
+                <tr style={{ padding: '10px' }} key={data._id}>
+                  <td style={{ color: 'gray' }}> {dat._id}</td>
+                  <td><img src={pfp} className="pfp"/></td>
+                  <td>{dat.name} </td>
+                  <td>{dat.cliente.name} </td>
+                  <td>{dat.vuelo.id} </td>
+                  <td>{dat.vuelo.arrivalDate} </td>
+                  <td>{dat.vuelo.launchDate} </td>
+                  <td>{dat.vuelo.piloto.name} </td>
+                  <td>{dat.cost} </td>
+                  <td>{dat.equipaje} </td>
+                  {/*<td>{dat.piloto.id_referencia} </td>
+                                    <td>{dat.piloto.name} </td>*/}
+                </tr>
+              ))}
+                 </tbody>
+            </table>
+        </div>
+    <Link to="/newTicket">
+      <button >Registar Ticket</button>
+    </Link>
+    </div>
+    </div>
+      ) : (<Redirect to="/"/>)
     );
-}	
+   
+  }
 
-export default Tickets;
+export default Ticket;
+/*{
+  "_id": "5dd89249b6f846567448b328",
+  "name": "Ticket1",
+  "vuelo": {
+    "_id": "5dd89249b6f846567448b329",
+    "id": "5dad1e442c224f4d6cc0ced0",
+    "arrivalDate": "1997-07-02T00:00:00.000Z",
+    "launchDate": "1997-07-02T00:00:00.000Z",
+    "capacidad": 1000,
+    "piloto": {
+      "_id": "5dd89249b6f846567448b32a",
+      "id_referencia": "5dad12241737723f9009a3dc",
+      "photo": "prueba.url",
+      "name": "James Gun",
+      "birthday": "1997-07-02T00:00:00.000Z",
+      "direccion": "La calle",
+      "mail": "prueba@gmail.com",
+      "numeberOfFlights": 1
+    }
+  },
+  "cliente": {
+    "_id": "5dd89249b6f846567448b32b",
+    "id": "5dacd12ce975651ecc6322b9",
+    "type": "Admin",
+    "name": "Ricardo4",
+    "mail": "ricardoma974@gmail.com",
+    "direccion": "Del sol 100"
+  },
+  "cost": 1000,
+  "equipaje": "dos maletas",
+  "__v": 0
+}
+}*/

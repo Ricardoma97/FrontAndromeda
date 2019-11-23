@@ -12,6 +12,7 @@ import NewVuelo from './components/newVuelo.js'
 import Estaciones from './components/estaciones.js'
 import NewEstacion from './components/newEstacion.js'
 import Tickets from './components/tickets.js'
+import NewTicket from './components/newTicket.js'
 import Destinos from './components/destinos.js'
 import NewDestino from './components/newDestino.js'
 import axios from 'axios'
@@ -44,6 +45,9 @@ class App extends React.Component {
           </Route>
           <Route path="/Tickets" exact component={Tickets}>
             <Tickets /> 
+          </Route>
+          <Route path="/NewTicket" exact component={NewTicket}>
+            <NewTicket /> 
           </Route>
           <Route path="/Vuelos" exact component={Vuelos}>
             <Vuelos /> 
