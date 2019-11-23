@@ -1,53 +1,46 @@
 import React, { useState, useEffect } from "react";
 import Navi from './navi.js';
 import axios from 'axios';
+import { BrowserRouter as Router,Switch,Route,Link,Redirect} from "react-router-dom";
 
 function Users (){
   const[data,setData]=useState([]);
+  const[gotData,setGotData]=useState(false);
   const[id,setId]=useState(1);
   const[intervalIsSet,setintervalIsSet]=useState(false);
   const[idToDelete,setidToDelete]=useState(null);
   const[idToUpdate,setidToUpdate]=useState(null);
   const[objectToUpdate,setobjectToUpdate]=useState(null);
-  const[token,setToken]=useState('');
-  const[tabla,setTabla]=useState([]);
-  const options = {
-    url: 'http://localhost:3001/users/',
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json;charset=UTF-8'
-    },
-    data: {
-      "type":"Admin",
-      "name":"Ricardo2000",
-      "password":"123456",
-      "mail":"ricardoma972000@gmail.com",
-      "direccion":"Del sol 100"
-    }
-  };
-
+  const[token,setToken]=useState([window.localStorage.getItem('token')]);
+  const[tabla,setTabla]=useState();
+  
   useEffect(()=>{
     console.log('se cargo el comp user');
     console.log({data})
+    //getUsers();
     //console.log({id});
+    if(!`${gotData}`){
+      getUsers();
+      console.log('no habia data');
+    }
     //getDataFromDb();
     if (!intervalIsSet) {
       /*let interval = setInterval(getDataFromDb, 10000);*/
       //console.log('wut?');
       //setintervalIsSet(interval);
     }
-  }
-  );
+  });
+
   function lol(argument){
     setId(id+1);
   };
-  function getDataFromDb(){
+  /*function getDataFromDb(){
     axios(options)
       .then((response) => console.log(response));
-  };
+  };*/
   function checkToken(){
-    console.log({token})
+    console.log({token});
+    window.localStorage.setItem('token',JSON.stringify({token}));
   };
   function getUsers(){
     var AuthStr = 'Bearer '.concat({token});
@@ -65,14 +58,28 @@ function Users (){
     axios.post('http://localhost:3001/users/login',{
     "name":"Ricardo13",
     "password":"123456"})
-      .then((response) => setToken(response.data.accessToken))
+      .then((response) => {
+        setToken(response.data.accessToken);
+        window.localStorage.setItem('token',(response.data.accessToken));
+        window.localStorage.setItem('logedIn',true);
+      })
   };
+
+  function logout(){
+    setToken('');
+    window.localStorage.removeItem('token');
+    window.localStorage.setItem('logedIn',false);
+    this.forceUpdate();
+  }
+
   return (
+     window.localStorage.getItem('logedIn') ? (
     <div>
     <Navi/>
-    <h1>USERS {id}</h1>
-    <h2>lol</h2>
-    <ul>
+    <div class="container">
+    <h2>Usuarios</h2>
+    {/*<p>{token}</p>*/}
+   {/* <ul>
           {data.length <= 0
             ? 'NO DB ENTRIES YET'
             : data.map((dat) => (
@@ -83,13 +90,39 @@ function Users (){
                   <span style={{ color: 'gray' }}> mail: </span> {dat.mail} <br />
                 </li>
               ))}
-    </ul>
-    <button onClick={getDataFromDb}>MAS</button>
-    <button onClick={login}>Login</button>
+    </ul>*/}
+    <div id="tabla">
+            <table>
+                <thead>
+                    <h5>Todos los vuelos</h5>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Mail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {data.length <= 0
+            ? 'NO DB ENTRIES YET'
+            : data.map((dat) => (
+                <tr style={{ padding: '10px' }} key={data._id}>
+                  <td style={{ color: 'gray' }}> {dat._id}</td>
+                  <td>{dat.name} </td>
+                  <td style={{ color: 'gray' }}>{dat.mail}</td>
+                </tr>
+              ))}
+                 </tbody>
+            </table>
+        </div>
     <button onClick={checkToken}>checkToken</button>
     <button onClick={getUsers}>getUsers</button>
     <button onClick={consolelogusers}>consolelogusers</button>
+    <Link to="/newUser">
+      <button >Nuevo usuario</button>
+    </Link>
     </div>
+    </div>
+      ) : (<Redirect to="/"/>)
     );
    
   }

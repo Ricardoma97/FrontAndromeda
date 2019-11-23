@@ -1,10 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router,Switch,Route,Link} from "react-router-dom";
+import { Router,Switch,Route,Link,Redirect} from "react-router-dom";
+import{ useState, useEffect } from "react";
 
-class Navi extends React.Component{
-   
-  render(){
+function Navi(){
+    const[lol,setlol]=useState(0);
     return(
+      window.localStorage.getItem('logedIn')?(
     <div>
         <nav>          
           <ul>
@@ -24,12 +25,18 @@ class Navi extends React.Component{
               <Link to="/Vuelos">Vuelos</Link>
             </li>
             <li>
+              <Link to="/Destinos">Destinos</Link>
+            </li>
+            <li>
               <Link to="/Users">Users</Link>
             </li>
+            <div>
+              <button onClick={()=>{window.localStorage.removeItem('token'); window.localStorage.removeItem('logedIn'); setlol({lol}+1);}}>Log out</button>
+            </div>
           </ul>
         </nav>
       </div>
+      ):(<div> You are not loged in</div>)
     );
-  }
 }
 export default Navi;

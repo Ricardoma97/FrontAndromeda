@@ -5,9 +5,11 @@ import auth from './auth.js'
 import Home from './components/home.js'
 import Pilotos from './components/pilotos.js'
 import Users from './components/users.js'
+import NewUsers from './components/newUser.js'
 import Vuelos from './components/vuelos.js'
 import Estaciones from './components/estaciones.js'
 import Tickets from './components/tickets.js'
+import Destinos from './components/destinos.js'
 import axios from 'axios'
 
 class App extends React.Component {
@@ -24,6 +26,9 @@ class App extends React.Component {
           <Route path="/Users" exact component={Users}>
             <Users />
           </Route>
+          <Route path="/newUser" exact component={NewUsers}>
+            <NewUsers />
+          </Route>
           <Route path="/Estaciones" exact component={Estaciones}>
             <Estaciones /> 
           </Route>
@@ -32,6 +37,9 @@ class App extends React.Component {
           </Route>
           <Route path="/Vuelos" exact component={Vuelos}>
             <Vuelos /> 
+            </Route>
+             <Route path="/Destinos" exact component={Destinos}>
+            <Destinos /> 
           </Route>
           <Route path="/" exact component={Home} >
             <Home /> 
