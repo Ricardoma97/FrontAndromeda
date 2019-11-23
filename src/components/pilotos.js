@@ -45,7 +45,7 @@ function Pilotos (){
   };
   function getpilotos(){
     var AuthStr = 'Bearer '.concat({token});
-    axios.get('http://localhost:3001/pilotos/',{headers: {Authorization: `Bearer ${token}`}})
+    axios.get('https://andromedaapi.herokuapp.com/pilotos/',{headers: {Authorization: `Bearer ${token}`}})
     .then((response) => setData(response.data.result))
     .catch((error) => {
      console.log('error ' + error);
@@ -56,7 +56,7 @@ function Pilotos (){
     setTabla({data})
   }
   function login(){
-    axios.post('http://localhost:3001/pilotos/login',{
+    axios.post('https://andromedaapi.herokuapp.com/pilotos/login',{
     "name":"Ricardo13",
     "password":"123456"})
       .then((response) => {

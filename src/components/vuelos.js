@@ -49,7 +49,7 @@ function Vuelos (){
   };
   function getVuelos(){
     var AuthStr = 'Bearer '.concat({token});
-    axios.get('http://localhost:3001/vuelos/',{headers: {Authorization: `Bearer ${token}`}})
+    axios.get('https://andromedaapi.herokuapp.com/vuelos/',{headers: {Authorization: `Bearer ${token}`}})
     .then((response) => setData(response.data.result))
     .catch((error) => {
      console.log('error ' + error);
@@ -57,7 +57,7 @@ function Vuelos (){
   }
   function getPilotos(){
     var AuthStr = 'Bearer '.concat({token});
-    axios.get('http://localhost:3001/pilotos/',{headers: {Authorization: `Bearer ${token}`}})
+    axios.get('https://andromedaapi.herokuapp.com/pilotos/',{headers: {Authorization: `Bearer ${token}`}})
     .then((response) => setDatapilotos(response.data.result))
     .catch((error) => {
      console.log('error ' + error);

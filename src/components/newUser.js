@@ -37,7 +37,7 @@ function NewUser (){
   };*/
 
   function signUp(){
-    axios.post('http://localhost:3001/users/',{
+    axios.post('https://andromedaapi.herokuapp.com/users/',{
     "type":`${type}`,
     "name":`${name}`,
     "password":`${password}`,

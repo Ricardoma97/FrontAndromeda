@@ -35,7 +35,7 @@ function NewPiloto (){
   };*/
 
   function signUp(){
-    axios.post('http://localhost:3001/pilotos/',{
+    axios.post('https://andromedaapi.herokuapp.com/pilotos/',{
     "name":`${name}`,
     "birthday":`${birthday}`,
     "direccion":`${direccion}`,

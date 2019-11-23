@@ -56,7 +56,7 @@ function NewVuelo (){
 
   function getPilotos(){
     var AuthStr = 'Bearer '.concat({token});
-    axios.get('http://localhost:3001/pilotos/',{headers: {Authorization: `Bearer ${token}`}})
+    axios.get('https://andromedaapi.herokuapp.com/pilotos/',{headers: {Authorization: `Bearer ${token}`}})
     .then((response) => setdata(response.data.result))
     .catch((error) => {
      console.log('error ' + error);
@@ -98,7 +98,7 @@ function NewVuelo (){
 */
 
   function signUp(){
-    axios.post('http://localhost:3001/vuelos/',{
+    axios.post('https://andromedaapi.herokuapp.com/vuelos/',{
     "destino":`${destino}`,
     "tipoDeVuelo":`${tipoDeVuelo}`,
     "arrivalDate":`${arrivalDate}`,

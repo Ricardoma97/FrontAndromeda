@@ -22,7 +22,7 @@ function NewDestino(){
   };*/
 
   function signUp(){
-    axios.post('http://localhost:3001/destinos/',{
+    axios.post('https://andromedaapi.herokuapp.com/destinos/',{
     "name":`${name}`,
     "distanceFromEarth":`${distance}`
   },{headers: {Authorization: `Bearer ${token}`}})

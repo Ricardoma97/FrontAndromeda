@@ -45,7 +45,7 @@ function Destinos (){
   };
   function getDestinos(){
     var AuthStr = 'Bearer '.concat({token});
-    axios.get('http://localhost:3001/Destinos/',{headers: {Authorization: `Bearer ${token}`}})
+    axios.get('https://andromedaapi.herokuapp.com/destinos/',{headers: {Authorization: `Bearer ${token}`}})
     .then((response) => setData(response.data.result))
     .catch((error) => {
      console.log('error ' + error);

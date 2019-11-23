@@ -22,7 +22,7 @@ function Home(){
     console.log('lol');
     console.log(`${usuario}`);
     console.log(`${contraseña}`);
-    axios.post('http://localhost:3001/users/login',{
+    axios.post('https://andromedaapi.herokuapp.com/users/login',{
     "name":`${usuario}`,
     "password":`${contraseña}`})
       .then((response) => {

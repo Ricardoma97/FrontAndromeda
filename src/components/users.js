@@ -45,7 +45,7 @@ function Users (){
   };
   function getUsers(){
     var AuthStr = 'Bearer '.concat({token});
-    axios.get('http://localhost:3001/users/',{headers: {Authorization: `Bearer ${token}`}})
+    axios.get('https://andromedaapi.herokuapp.com/users/',{headers: {Authorization: `Bearer ${token}`}})
     .then((response) => setData(response.data.result))
     .catch((error) => {
      console.log('error ' + error);
@@ -56,7 +56,7 @@ function Users (){
     setTabla({data})
   }
   function login(){
-    axios.post('http://localhost:3001/users/login',{
+    axios.post('https://andromedaapi.herokuapp.com/users/login',{
     "name":"Ricardo13",
     "password":"123456"})
       .then((response) => {

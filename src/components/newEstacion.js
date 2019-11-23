@@ -18,7 +18,7 @@ function NewEstacion(){
   };*/
 
   function signUp(){
-    axios.post('http://localhost:3001/estaciones/',{
+    axios.post('https://andromedaapi.herokuapp.com/estaciones/',{
     "name":`${name}`,
   },{headers: {Authorization: `Bearer ${token}`}})
       .then((response) => {
